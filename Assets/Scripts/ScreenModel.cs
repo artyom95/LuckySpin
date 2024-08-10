@@ -1,16 +1,12 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using DefaultNamespace;
-using DefaultNamespace.Events;
 using Enum;
+using Events;
 using UniTaskPubSub;
 using UnityEngine;
 using UnityEngine.Events;
 
-/// <summary>
-/// make deal with right finding ItemFinishCard (FindCard method)
-/// fix issue with Item Collider
-/// </summary>
+
 public class ScreenModel
 {
     public int Attempts { get; }
@@ -18,7 +14,7 @@ public class ScreenModel
     private readonly AnimationController _animationController;
     private readonly AttemptController _attemptController;
     private IAsyncSubscriber _subscriber;
-    private readonly AchieveDetecter _achieveDetector;
+    private readonly AchieveDetector _achieveDetector;
     private List<ItemCard> _cards;
     private readonly IAsyncPublisher _publisher;
     private readonly CardInformationHandler _cardInformationHandler;
@@ -26,7 +22,7 @@ public class ScreenModel
 
     public ScreenModel(AttemptController attemptController,
         AnimationController animationController,
-        AchieveDetecter achieveDetector,
+        AchieveDetector achieveDetector,
         IAsyncSubscriber subscriber,
         IAsyncPublisher publisher,
         CardInformationHandler cardInformationHandler)
@@ -58,7 +54,7 @@ public class ScreenModel
         return _attemptController.Attempts;
     }
 
-    public bool IsItGameOver()
+    public bool IsGameOver()
     {
         if (_attemptController.Attempts > 0)
         {
@@ -79,13 +75,7 @@ public class ScreenModel
     {
         return _animationController.HideChestWithAchievements;
     }
-
-    /// <summary>
-    /// it should be personal class something like AmountAchieveManager which check
-    /// attempt in any case and if it is not null this class have to add value to
-    /// previous value, if it is null class could be replace null to value
-    /// </summary>
-    /// <param name="createdFinishCards"></param>
+    
     private void InitializeFinishCards(List<ItemFinishCard> createdFinishCards)
     {
         foreach (var finishCard in createdFinishCards)
@@ -95,16 +85,13 @@ public class ScreenModel
         }
     }
 
-    private void OnAchieveDetectHandler()
+    private async void OnAchieveDetectHandler()
     {
         var currentItem = _achieveDetector.FindAchieve();
-
-        Debug.Log(currentItem.Name);
-
-        _publisher.PublishAsync(new BackGroundChangedEvent(true));
         var currentCard = FindCard(currentItem);
-
-        ShowAnimation(currentCard);
+        _publisher.PublishAsync(new BackGroundChangedEvent(true));
+        await ShowAnimation(currentCard);
+        
     }
 
     private ItemCard FindCard(Item detectedItem)
@@ -115,10 +102,10 @@ public class ScreenModel
             if (itemCard.Name.Equals(detectedItem.Name))
             {
                 findingCard = itemCard;
+                findingCard.gameObject.SetActive(true);
             }
         }
-
-        SetActive(findingCard);
+       
         return findingCard;
     }
 
@@ -133,15 +120,10 @@ public class ScreenModel
             await _animationController.ShowCardAnimation(currentCard);
         }
 
-        await CollectCardInformation(currentCard);
+        CollectCardInformation(currentCard);
     }
-
-    private void SetActive(ItemCard currentCard)
-    {
-        currentCard.gameObject.SetActive(true);
-    }
-
-    private async UniTask CollectCardInformation(ItemCard currentCard)
+    
+    private void CollectCardInformation(ItemCard currentCard)
     {
         _cardInformationHandler.AddCardInformation(currentCard);
     }

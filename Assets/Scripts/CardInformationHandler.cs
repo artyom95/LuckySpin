@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Enum;
 
 public class CardInformationHandler
 {
@@ -12,12 +13,15 @@ public class CardInformationHandler
 
     public void AddCardInformation(ItemCard currentCard)
     {
+        if (currentCard.Name.Equals(AchieveType.Skull.ToString()))
+        {
+            return;
+        }
+
         if (IsCardInformation(currentCard))
         {
-            _cardsInformation.Remove(currentCard.Name);
-
             var currentReward = CountNewAmountRewarding(currentCard);
-            _cardsInformation.Add(currentCard.Name, currentReward.ToString());
+            _cardsInformation[currentCard.Name] = currentReward.ToString();
         }
         else
         {
@@ -32,7 +36,7 @@ public class CardInformationHandler
             return _cardsInformation[card.Name];
         }
 
-        return default;
+        return GlobalConstant.DEFAULT_AMOUNT_REWARDS;
     }
 
     private bool IsCardInformation(ItemCard currentCard)

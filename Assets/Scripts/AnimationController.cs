@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using DefaultNamespace;
-using DefaultNamespace.Events;
 using DG.Tweening;
 using Events;
 using JetBrains.Annotations;
@@ -21,6 +18,7 @@ public class AnimationController
     private GameObject _chest;
     private GameObject _rotateWheel;
     private List<ItemFinishCard> _createdFinishCards;
+    private Action _publishEvent;
 
     public AnimationController(GameSettings gameSettings, IAsyncPublisher publisher)
     {
@@ -66,7 +64,7 @@ public class AnimationController
 
         var sequence = DOTween.Sequence();
 
-        sequence.Append(card.transform.DOScale(currentScale, _gameSettings.ScaleDuration));
+       sequence.Append(card.transform.DOScale(currentScale, _gameSettings.ScaleDuration));
         sequence.Append(card.transform.DOShakePosition(_gameSettings.ShakeDuration));
         sequence.AppendInterval(_gameSettings.Delay);
 
@@ -74,7 +72,7 @@ public class AnimationController
         sequence.AppendCallback(() => card.gameObject.SetActive(false));
         sequence.Append(card.transform.DOScale(currentScale, _gameSettings.ScaleDuration));
 
-        sequence.AppendCallback(() => _publisher.PublishAsync(new BackGroundChangedEvent(false)));
+         sequence.AppendCallback(() => _publisher.PublishAsync(new BackGroundChangedEvent(false)));
     }
 
     public void ShowGameOverAnimation(List<ItemFinishCard> createdFinishCards)
@@ -96,10 +94,11 @@ public class AnimationController
         sequence.AppendInterval(_gameSettings.Delay)
             .Append(card.transform.DOMoveX(_gameSettings.ChestХPosition, _gameSettings.MoveDuration))
             .AppendInterval(_gameSettings.Delay)
+           
             .Append(card.transform.DOScale(finishScale, _gameSettings.ScaleDuration))
-            .AppendCallback(ScaleChest)
+            .AppendCallback(() => _publisher.PublishAsync(new BackGroundChangedEvent(false)))
+          .AppendCallback(ScaleChest)
             .AppendCallback(() => card.gameObject.SetActive(false))
-
             .Append(card.transform.DOMoveX(firstPosition.x, _gameSettings.MoveDuration))
             .Append(card.transform.DOScale(currentScale, _gameSettings.ScaleDuration));
     }
@@ -123,7 +122,6 @@ public class AnimationController
         sequence.Append(_chest.transform.DOMoveX(_gameSettings.LastMovingPosition.x, _gameSettings.MoveDuration))
             .Append(_chest.transform.DOShakePosition(_gameSettings.ShakeDuration, 2f, 40))
             .AppendCallback(() => TurnOnFinishCardAnimation());
-
     }
 
     private async UniTask TurnOnFinishCardAnimation()
@@ -135,7 +133,7 @@ public class AnimationController
             sequenceNumber++;
         }
 
-        await _publisher.PublishAsync(new TurnOffCalmButtonEvent());
+        _publisher.Publish(new TurnOnCalmButtonEvent());
     }
 
     private async UniTask ShowFinishCardAnimation(ItemFinishCard itemFinishCard, int sequenceNumber)
@@ -179,23 +177,21 @@ public class AnimationController
         var currentScale = _chest.transform.localScale;
         var sequence = DOTween.Sequence();
         sequence.WaitForCompletion();
-        sequence.Append(_chest.transform.DOScale(currentScale * 1.3f, _gameSettings.ScaleChestDuration))
+        sequence.Append(_chest.transform.DOScale(currentScale * _gameSettings.ChestScale, _gameSettings.ScaleChestDuration))
             .Append(_chest.transform.DOScale(currentScale, _gameSettings.ScaleChestDuration))
-            .AppendCallback(() => _publisher.PublishAsync(new BackGroundChangedEvent(false)))
             .AppendCallback(() => _publisher.PublishAsync(new AnimationCompletedEvent()));
     }
 
     private void InvokeDetectedEvent()
     {
-        Debug.Log("InvokeRotationEvent");
         _onAchieveDetectedHandler?.Invoke();
     }
 
     private void RotateWheel()
     {
         var speedRotation = Random.Range(_gameSettings.MinimalSpeedRotation, _gameSettings.MaximalSpeedRotation);
-        var angelRotation = Random.Range(-_gameSettings.MinimalAngleRotation, -_gameSettings.MaximalAngleRotation);
-        var vectorRotation = new Vector3(0, 0, angelRotation);
+        var angleRotation = Random.Range(_gameSettings.MinimalAngleRotation, _gameSettings.MaximalAngleRotation);
+        var vectorRotation = new Vector3(0, 0, angleRotation);
         var sequence = DOTween.Sequence();
 
         sequence.Append(_rotateWheel.transform.DORotate(vectorRotation, speedRotation));

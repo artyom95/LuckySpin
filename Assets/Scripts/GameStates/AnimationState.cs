@@ -1,7 +1,6 @@
-using System.Threading.Tasks;
 using Common.Extensions;
 using Cysharp.Threading.Tasks;
-using DefaultNamespace.Events;
+using Events;
 using UniTaskPubSub;
 using IState = StateMachine.IState;
 

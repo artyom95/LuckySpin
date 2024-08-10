@@ -1,6 +1,6 @@
 namespace Events
 {
-    public struct TurnOffCalmButtonEvent
+    public struct TurnOnCalmButtonEvent
     {
         
     }

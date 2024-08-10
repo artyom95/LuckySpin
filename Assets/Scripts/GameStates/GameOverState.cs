@@ -1,6 +1,6 @@
 using Common.Extensions;
 using Cysharp.Threading.Tasks;
-using DefaultNamespace.Events;
+using Events;
 using StateMachine;
 using UniTaskPubSub;
 
@@ -9,8 +9,8 @@ namespace GameStates
     public class GameOverState : IState
     {
         private StateMachine.StateMachine _stateMachine;
-        private ScreenPresenter _screenPresenter;
-        private IAsyncSubscriber _subscriber;
+        private readonly ScreenPresenter _screenPresenter;
+        private readonly IAsyncSubscriber _subscriber;
         private CompositeDisposable _subscriptions;
 
         public GameOverState(ScreenPresenter screenPresenter,  IAsyncSubscriber subscriber)

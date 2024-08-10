@@ -1,4 +1,4 @@
-namespace DefaultNamespace.Events
+namespace Events
 {
     public struct LockedSpinButtonEvent
     {

@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -22,24 +21,20 @@ public class ButtonController : MonoBehaviour
         _subscribeCalmAction = subscribeAction;
         _calmButton.onClick.AddListener(subscribeAction);
     }
-    [UsedImplicitly]
+    
     public void LockSpinButton()
     {
         _spinButton.interactable = false;
-        Debug.Log("Spin Button was Locked");
     }
-
-    [UsedImplicitly]
+    
     public void UnLockSpinButton()
     {
         _spinButton.interactable =true;
-        Debug.Log("Spin Button was UnLocked");
-
     }
 
-    public void TurnOffCalmButton()
+    public void  TurnOnCalmButton()
     {
-        _calmButton.gameObject.SetActive(true);
+         _calmButton.gameObject.SetActive(true);
     }
     private void OnDestroy()
     {

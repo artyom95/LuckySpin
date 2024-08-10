@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using DefaultNamespace;
 using GameStates;
 using UniTaskPubSub;
 using UnityEngine;
@@ -36,7 +35,7 @@ public class GameLifeTimeScope : LifetimeScope
 
         builder.Register<AttemptController>(Lifetime.Singleton);
         builder.Register<AnimationController>(Lifetime.Singleton);
-        builder.Register<AchieveDetecter>(Lifetime.Singleton);
+        builder.Register<AchieveDetector>(Lifetime.Singleton);
 
         builder.Register<CardInformationHandler>(Lifetime.Singleton);
 

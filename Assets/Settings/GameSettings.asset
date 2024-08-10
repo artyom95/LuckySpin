@@ -13,28 +13,30 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   <Sprites>k__BackingField:
-  - {fileID: 2214622292939137135, guid: 025e3be567bb683498d402a862c9671f, type: 3}
-  - {fileID: 2214622292939137135, guid: 95fd4590249353d46ae3027d773b8d4f, type: 3}
-  - {fileID: 2214622292939137135, guid: 31d932ca0bac0ae46ba7b1339b443b48, type: 3}
-  - {fileID: 2214622292939137135, guid: e8da8ceb52a956a4bb166da2782db1a4, type: 3}
-  - {fileID: 2214622292939137135, guid: 025e3be567bb683498d402a862c9671f, type: 3}
-  - {fileID: 2214622292939137135, guid: 95fd4590249353d46ae3027d773b8d4f, type: 3}
-  - {fileID: 2214622292939137135, guid: 31d932ca0bac0ae46ba7b1339b443b48, type: 3}
-  - {fileID: 2214622292939137135, guid: e9efcecf2ec22684abd03f79fe5f1dd5, type: 3}
+  - {fileID: -6292196639561229101, guid: 95fd4590249353d46ae3027d773b8d4f, type: 3}
+  - {fileID: 9064206776973120456, guid: 31d932ca0bac0ae46ba7b1339b443b48, type: 3}
+  - {fileID: 586020475012507464, guid: e9efcecf2ec22684abd03f79fe5f1dd5, type: 3}
+  - {fileID: 8966387225087626274, guid: 025e3be567bb683498d402a862c9671f, type: 3}
+  - {fileID: -6292196639561229101, guid: 95fd4590249353d46ae3027d773b8d4f, type: 3}
+  - {fileID: 9064206776973120456, guid: 31d932ca0bac0ae46ba7b1339b443b48, type: 3}
+  - {fileID: 8346922324609710551, guid: e8da8ceb52a956a4bb166da2782db1a4, type: 3}
+  - {fileID: 8966387225087626274, guid: 025e3be567bb683498d402a862c9671f, type: 3}
   <ItemPrefab>k__BackingField: {fileID: 1052405522870102793, guid: 8e38d8a7a871e4e44ba12bd1d531f1f5, type: 3}
   <AmountAttempts>k__BackingField: 3
-  <LastMovingPosition>k__BackingField: {x: 446, y: 195, z: -235.2}
+  <LastMovingPosition>k__BackingField: {x: 452, y: 195, z: -235.2}
   <JumpPower>k__BackingField: 20
   <NumberJumps>k__BackingField: 1
   <MoveDuration>k__BackingField: 1
   <ScaleDuration>k__BackingField: 3
+  <ScaleAttemptDuration>k__BackingField: 0
   <ScaleChestDuration>k__BackingField: 0.5
   <RotateDuration>k__BackingField: 3
   <RotateAngle>k__BackingField: {x: 0, y: 720, z: 0}
   <ShakeDuration>k__BackingField: 5
-  "<Chest\u0425Position>k__BackingField": 540
-  <MinimalSpeedRotation>k__BackingField: 0.5
-  <MaximalSpeedRotation>k__BackingField: 3
-  <MinimalAngleRotation>k__BackingField: 110
+  "<Chest\u0425Position>k__BackingField": 545
+  <ChestScale>k__BackingField: 1.1
+  <MinimalSpeedRotation>k__BackingField: 1
+  <MaximalSpeedRotation>k__BackingField: 2
+  <MinimalAngleRotation>k__BackingField: 180
   <MaximalAngleRotation>k__BackingField: 360
   <Delay>k__BackingField: 0.2
